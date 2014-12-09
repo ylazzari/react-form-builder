@@ -1,0 +1,30 @@
+{
+  "name": "react-form-builder",
+  "version": "1.0.0",
+  "description": "Form builder sample",
+  "main": "bundle.js",
+  "dependencies": {
+    "fluxxor": "^1.5.1",
+    "react-dnd": "^0.6.1",
+    "react": "^0.12.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.2.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-react": "^0.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ylazzari/react-form-builder.git"
+  },
+  "author": "ylazzari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ylazzari/react-form-builder/issues"
+  },
+  "homepage": "https://github.com/ylazzari/react-form-builder"
+}
