@@ -4698,8 +4698,8 @@ var union = require('lodash-node/modern/arrays/union'),
   EnterLeaveMonitor.prototype.enter=function(enteringNode) {
     this.$EnterLeaveMonitor_entered = union(
       this.$EnterLeaveMonitor_entered.filter(function(node) 
-        {return document.contains(node) &&
-        node.contains(enteringNode);}
+        {return document.body.contains(node) &&
+        (!node.contains || node.contains(enteringNode));}
       ),
       [enteringNode]
     );
@@ -4710,7 +4710,7 @@ var union = require('lodash-node/modern/arrays/union'),
   EnterLeaveMonitor.prototype.leave=function(leavingNode) {
     this.$EnterLeaveMonitor_entered = without(
       this.$EnterLeaveMonitor_entered.filter(function(node) 
-        {return document.contains(node);}
+        {return document.body.contains(node);}
       ),
       leavingNode
     );
@@ -4765,7 +4765,7 @@ function checkIfCurrentDragTargetRectChanged() {
 function triggerDragEndIfDragSourceWasRemovedFromDOM() {
   if (_currentDragTarget &&
       _imitateCurrentDragEnd &&
-      !document.contains(_currentDragTarget)) {
+      !document.body.contains(_currentDragTarget)) {
 
     _imitateCurrentDragEnd();
   }
@@ -5505,7 +5505,7 @@ module.exports = without;
 
 },{"../internals/baseDifference":97,"../internals/slice":115}],96:[function(require,module,exports){
 module.exports=require(19)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\arrayPool.js":19}],97:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\arrayPool.js":19}],97:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -5615,39 +5615,39 @@ module.exports = baseFlatten;
 
 },{"../objects/isArguments":117,"../objects/isArray":118}],99:[function(require,module,exports){
 module.exports=require(25)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseIndexOf.js":25}],100:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseIndexOf.js":25}],100:[function(require,module,exports){
 module.exports=require(27)
-},{"./baseIndexOf":99,"./cacheIndexOf":101,"./createCache":103,"./getArray":104,"./largeArraySize":108,"./releaseArray":112,"./releaseObject":113,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseUniq.js":27}],101:[function(require,module,exports){
+},{"./baseIndexOf":99,"./cacheIndexOf":101,"./createCache":103,"./getArray":104,"./largeArraySize":108,"./releaseArray":112,"./releaseObject":113,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseUniq.js":27}],101:[function(require,module,exports){
 module.exports=require(28)
-},{"./baseIndexOf":99,"./keyPrefix":107,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cacheIndexOf.js":28}],102:[function(require,module,exports){
+},{"./baseIndexOf":99,"./keyPrefix":107,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cacheIndexOf.js":28}],102:[function(require,module,exports){
 module.exports=require(29)
-},{"./keyPrefix":107,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cachePush.js":29}],103:[function(require,module,exports){
+},{"./keyPrefix":107,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cachePush.js":29}],103:[function(require,module,exports){
 module.exports=require(30)
-},{"./cachePush":102,"./getObject":105,"./releaseObject":113,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\createCache.js":30}],104:[function(require,module,exports){
+},{"./cachePush":102,"./getObject":105,"./releaseObject":113,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\createCache.js":30}],104:[function(require,module,exports){
 module.exports=require(32)
-},{"./arrayPool":96,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getArray.js":32}],105:[function(require,module,exports){
+},{"./arrayPool":96,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getArray.js":32}],105:[function(require,module,exports){
 module.exports=require(33)
-},{"./objectPool":110,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getObject.js":33}],106:[function(require,module,exports){
+},{"./objectPool":110,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getObject.js":33}],106:[function(require,module,exports){
 module.exports=require(34)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\isNative.js":34}],107:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\isNative.js":34}],107:[function(require,module,exports){
 module.exports=require(35)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\keyPrefix.js":35}],108:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\keyPrefix.js":35}],108:[function(require,module,exports){
 module.exports=require(36)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\largeArraySize.js":36}],109:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\largeArraySize.js":36}],109:[function(require,module,exports){
 module.exports=require(37)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\maxPoolSize.js":37}],110:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\maxPoolSize.js":37}],110:[function(require,module,exports){
 module.exports=require(38)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectPool.js":38}],111:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectPool.js":38}],111:[function(require,module,exports){
 module.exports=require(39)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectTypes.js":39}],112:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectTypes.js":39}],112:[function(require,module,exports){
 module.exports=require(40)
-},{"./arrayPool":96,"./maxPoolSize":109,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseArray.js":40}],113:[function(require,module,exports){
+},{"./arrayPool":96,"./maxPoolSize":109,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseArray.js":40}],113:[function(require,module,exports){
 module.exports=require(41)
-},{"./maxPoolSize":109,"./objectPool":110,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseObject.js":41}],114:[function(require,module,exports){
+},{"./maxPoolSize":109,"./objectPool":110,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseObject.js":41}],114:[function(require,module,exports){
 module.exports=require(43)
-},{"./objectTypes":111,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\shimKeys.js":43}],115:[function(require,module,exports){
+},{"./objectTypes":111,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\shimKeys.js":43}],115:[function(require,module,exports){
 module.exports=require(44)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\slice.js":44}],116:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\slice.js":44}],116:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -5705,15 +5705,15 @@ module.exports = defaults;
 
 },{"../internals/objectTypes":111,"./keys":120}],117:[function(require,module,exports){
 module.exports=require(50)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArguments.js":50}],118:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArguments.js":50}],118:[function(require,module,exports){
 module.exports=require(51)
-},{"../internals/isNative":106,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArray.js":51}],119:[function(require,module,exports){
+},{"../internals/isNative":106,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArray.js":51}],119:[function(require,module,exports){
 module.exports=require(53)
-},{"../internals/objectTypes":111,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isObject.js":53}],120:[function(require,module,exports){
+},{"../internals/objectTypes":111,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isObject.js":53}],120:[function(require,module,exports){
 module.exports=require(55)
-},{"../internals/isNative":106,"../internals/shimKeys":114,"./isObject":119,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\keys.js":55}],121:[function(require,module,exports){
+},{"../internals/isNative":106,"../internals/shimKeys":114,"./isObject":119,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\keys.js":55}],121:[function(require,module,exports){
 module.exports=require(59)
-},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\utilities\\noop.js":59}],122:[function(require,module,exports){
+},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\utilities\\noop.js":59}],122:[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -23919,9 +23919,22 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":149}],268:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require("react");
+
+var ActionIcon = React.createClass({displayName: 'ActionIcon',
+  render: function() {
+    return (React.createElement("span", {onClick: this.props.onClick, className: "glyphicon " + this.props.icon + " action-item"}));
+  }
+});
+
+module.exports = ActionIcon;
+},{"react":267}],269:[function(require,module,exports){
 var React = require("react");
 var Fluxxor = require("fluxxor");
 var DragDropMixin = require('react-dnd').DragDropMixin;
+var FormBuilder = require("./formBuilder.jsx");
 
 var constants = {
   ADD_COMPONENT: "ADD_COMPONENT",
@@ -24005,14 +24018,125 @@ var stores = {
 };
 
 var flux = new Fluxxor.Flux(stores, actions);
-var FluxMixin = Fluxxor.FluxMixin(React);
-var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-var ActionIcon = React.createClass({displayName: 'ActionIcon',
+React.render(React.createElement(FormBuilder, {flux: flux}), document.getElementById('app'));
+},{"./formBuilder.jsx":275,"fluxxor":1,"react":267,"react-dnd":72}],270:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require("react");
+
+var ComponentEdit = React.createClass({displayName: 'ComponentEdit',
   render: function() {
-    return (React.createElement("span", {onClick: this.props.onClick, className: "glyphicon " + this.props.icon + " action-item"}));
+    if (this.props.component) {
+        return (React.createElement("div", null, "Selected component " + this.props.component.label + " (" + this.props.component.id + ")"));
+    } else {
+        return null;
+    }
   }
 });
+
+module.exports = ComponentEdit;
+},{"react":267}],271:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require("react");
+var ComponentToolbarItem = require("./componentToolbarItem.jsx");
+
+var ComponentToolbar = React.createClass({displayName: 'ComponentToolbar',
+    getInitialState: function() {
+        var items = [];
+        for (var i = 0; i < 100; i++) {
+            var item = {
+                icon: "fa-check",
+                elementName: ""
+            };
+            items.push(item);
+        }
+        return {
+            items: items
+        };
+    },
+    
+    render: function() {
+        return (
+        React.createElement("div", null, 
+        this.state.items.map(function(item) {
+            return (React.createElement(ComponentToolbarItem, {item: item}));
+        }.bind(this))
+        )
+        );
+    }
+});
+
+module.exports = ComponentToolbar;
+},{"./componentToolbarItem.jsx":272,"react":267}],272:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require("react");
+
+var ComponentToolbarItem = React.createClass({displayName: 'ComponentToolbarItem',
+    render: function() {
+        return (React.createElement("div", {className: "fa " + this.props.item.icon}));
+    }
+});
+
+module.exports = ComponentToolbarItem;
+},{"react":267}],273:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require("react");
+var Fluxxor = require("fluxxor");
+var FluxMixin = Fluxxor.FluxMixin(React);
+var ActionIcon = require("./actionIcon.jsx");
+var ComponentTreeItem = require("./componentTreeItem.jsx");
+
+var ComponentTree = React.createClass({displayName: 'ComponentTree',
+  mixins: [FluxMixin],
+  
+  onComponentAdd: function(event) {
+    var newComponent = {
+      label: "New Component"
+    };
+    this.getFlux().actions.addComponent(newComponent);
+  },
+  
+  onClearComponents: function() {
+    this.getFlux().actions.clearComponents();
+  },
+   
+  render: function() {
+    
+    var componentList;
+    if (this.props.components.length > 0) {
+        componentList = (
+            React.createElement("ul", null, 
+                this.props.components.map(function(component, index) {
+                    return (React.createElement(ComponentTreeItem, {index: index, component: component}));
+                })
+            )
+        );
+    }
+    
+    return (
+        React.createElement("div", null, 
+            React.createElement("div", null, 
+				React.createElement(ActionIcon, {icon: "glyphicon-plus-sign", onClick: this.onComponentAdd}), 
+                React.createElement(ActionIcon, {icon: "glyphicon-remove-circle", onClick: this.onClearComponents})
+            ), 
+            componentList
+        )
+    );
+  }
+});
+
+module.exports = ComponentTree;
+},{"./actionIcon.jsx":268,"./componentTreeItem.jsx":274,"fluxxor":1,"react":267}],274:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require("react");
+var Fluxxor = require("fluxxor");
+var FluxMixin = Fluxxor.FluxMixin(React);
+var ActionIcon = require("./actionIcon.jsx");
 
 var ComponentTreeItem = React.createClass({displayName: 'ComponentTreeItem',
   mixins: [FluxMixin],
@@ -24042,54 +24166,18 @@ var ComponentTreeItem = React.createClass({displayName: 'ComponentTreeItem',
   }
 });
 
-var ComponentTree = React.createClass({displayName: 'ComponentTree',
-  mixins: [FluxMixin],
-  
-  onComponentAdd: function(event) {
-    var newComponent = {
-      label: "New Component"
-    };
-    this.getFlux().actions.addComponent(newComponent);
-  },
-  
-  onClearComponents: function() {
-    this.getFlux().actions.clearComponents();
-  },
-  
-  render: function() {
-    
-    var componentList;
-    if (this.props.components.length > 0) {
-        componentList = (
-            React.createElement("ul", null, 
-                this.props.components.map(function(component, index) {
-                    return (React.createElement(ComponentTreeItem, {index: index, component: component}));
-                })
-            )
-        );
-    }
-    
-    return (
-        React.createElement("div", null, 
-            React.createElement("div", null, 
-                React.createElement(ActionIcon, {icon: "glyphicon-plus-sign", onClick: this.onComponentAdd}), 
-                React.createElement(ActionIcon, {icon: "glyphicon-remove-circle", onClick: this.onClearComponents})
-            ), 
-            componentList
-        )
-    );
-  }
-});
+module.exports = ComponentTreeItem;
+},{"./actionIcon.jsx":268,"fluxxor":1,"react":267}],275:[function(require,module,exports){
+/** @jsx React.DOM */
 
-var ComponentEdit = React.createClass({displayName: 'ComponentEdit',
-  render: function() {
-    if (this.props.component) {
-        return (React.createElement("div", null, "Selected component " + this.props.component.label + " (" + this.props.component.id + ")"));
-    } else {
-        return null;
-    }
-  }
-});
+var React = require("react");
+var Fluxxor = require("fluxxor");
+var FluxMixin = Fluxxor.FluxMixin(React);
+var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+
+var ComponentTree = require("./componentTree.jsx");
+var ComponentEdit = require("./componentEdit.jsx");
+var ComponentToolbar = require("./componentToolbar.jsx");
 
 var FormBuilder = React.createClass({displayName: 'FormBuilder',
   mixins: [FluxMixin, StoreWatchMixin("ComponentStore")],
@@ -24105,12 +24193,13 @@ var FormBuilder = React.createClass({displayName: 'FormBuilder',
   
   render: function() {
       return (
-          React.createElement("div", null, 
-          React.createElement(ComponentTree, {key: "true", components: this.state.components}), 
-          React.createElement(ComponentEdit, {key: "edit", component: this.state.selectedComponent})
+          React.createElement("div", {className: "row"}, 
+            React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentToolbar, null)), 
+            React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentTree, {key: "true", components: this.state.components})), 
+            React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentEdit, {key: "edit", component: this.state.selectedComponent}))
           ));
   }
 });
 
-React.render(React.createElement(FormBuilder, {flux: flux}), document.getElementById('app'));
-},{"fluxxor":1,"react":267,"react-dnd":72}]},{},[268]);
+module.exports = FormBuilder;
+},{"./componentEdit.jsx":270,"./componentToolbar.jsx":271,"./componentTree.jsx":273,"fluxxor":1,"react":267}]},{},[268,269,270,271,272,273,274,275]);

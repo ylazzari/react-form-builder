@@ -1,6 +1,7 @@
 var React = require("react");
 var Fluxxor = require("fluxxor");
 var DragDropMixin = require('react-dnd').DragDropMixin;
+var FormBuilder = require("./formBuilder.jsx");
 
 var constants = {
   ADD_COMPONENT: "ADD_COMPONENT",
@@ -84,111 +85,5 @@ var stores = {
 };
 
 var flux = new Fluxxor.Flux(stores, actions);
-var FluxMixin = Fluxxor.FluxMixin(React);
-var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-
-var ActionIcon = React.createClass({
-  render: function() {
-    return (<span onClick={this.props.onClick} className={"glyphicon " + this.props.icon + " action-item"}></span>);
-  }
-});
-
-var ComponentTreeItem = React.createClass({
-  mixins: [FluxMixin],
-  
-  getIndex: function(event) {
-    var $li = $(event.target).parent("li");
-    return $li.data("component-index");
-  },
-  
-  onComponentSelect: function(event) {
-    var index = this.getIndex(event);
-    this.getFlux().actions.selectComponent(index);
-  },
-  
-  onComponentDelete: function(event) {
-    var index = this.getIndex(event);
-    this.getFlux().actions.deleteComponent(index);
-  },
-  
-  render: function() {
-      return (
-          <li data-component-index={this.props.index}>
-            <span onClick={this.onComponentSelect} className="action-item">{this.props.component.label + " (" + this.props.component.id + ") "}</span>
-            <ActionIcon icon="glyphicon-remove-sign" onClick={this.onComponentDelete} />
-          </li>
-      );
-  }
-});
-
-var ComponentTree = React.createClass({
-  mixins: [FluxMixin],
-  
-  onComponentAdd: function(event) {
-    var newComponent = {
-      label: "New Component"
-    };
-    this.getFlux().actions.addComponent(newComponent);
-  },
-  
-  onClearComponents: function() {
-    this.getFlux().actions.clearComponents();
-  },
-  
-  render: function() {
-    
-    var componentList;
-    if (this.props.components.length > 0) {
-        componentList = (
-            <ul>
-                {this.props.components.map(function(component, index) {
-                    return (<ComponentTreeItem index={index} component={component} />);
-                })}
-            </ul>
-        );
-    }
-    
-    return (
-        <div>
-            <div>
-                <ActionIcon icon="glyphicon-plus-sign" onClick={this.onComponentAdd} />
-                <ActionIcon icon="glyphicon-remove-circle" onClick={this.onClearComponents} />
-            </div>
-            {componentList}
-        </div>
-    );
-  }
-});
-
-var ComponentEdit = React.createClass({
-  render: function() {
-    if (this.props.component) {
-        return (<div>{"Selected component " + this.props.component.label + " (" + this.props.component.id + ")"}</div>);
-    } else {
-        return null;
-    }
-  }
-});
-
-var FormBuilder = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("ComponentStore")],
-  
-  getInitialState: function() {
-    return {};
-  },
-  
-  getStateFromFlux: function() {
-    var flux = this.getFlux();
-    return flux.store("ComponentStore").getState();
-  },
-  
-  render: function() {
-      return (
-          <div>
-          <ComponentTree key="true" components={this.state.components} />
-          <ComponentEdit key="edit" component={this.state.selectedComponent} />
-          </div>);
-  }
-});
 
 React.render(<FormBuilder flux={flux} />, document.getElementById('app'));
