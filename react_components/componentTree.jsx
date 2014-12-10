@@ -34,7 +34,7 @@ var ComponentTree = React.createClass({
     }
     
     return (
-        <div>
+        <div className="component-tree">
             <div>
 				<ActionIcon icon="glyphicon-plus-sign" onClick={this.onComponentAdd} />
                 <ActionIcon icon="glyphicon-remove-circle" onClick={this.onClearComponents} />

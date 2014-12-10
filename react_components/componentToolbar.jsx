@@ -20,7 +20,7 @@ var ComponentToolbar = React.createClass({
     
     render: function() {
         return (
-        <div>
+        <div className="component-toolbar container-fluid">
         {this.state.items.map(function(item) {
             return (<ComponentToolbarItem item={item} />);
         }.bind(this))}

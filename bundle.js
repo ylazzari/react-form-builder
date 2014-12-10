@@ -24028,7 +24028,7 @@ var React = require("react");
 var ComponentEdit = React.createClass({displayName: 'ComponentEdit',
   render: function() {
     if (this.props.component) {
-        return (React.createElement("div", null, "Selected component " + this.props.component.label + " (" + this.props.component.id + ")"));
+        return (React.createElement("div", {className: "component-edit"}, "Selected component " + this.props.component.label + " (" + this.props.component.id + ")"));
     } else {
         return null;
     }
@@ -24059,7 +24059,7 @@ var ComponentToolbar = React.createClass({displayName: 'ComponentToolbar',
     
     render: function() {
         return (
-        React.createElement("div", null, 
+        React.createElement("div", {className: "component-toolbar container-fluid"}, 
         this.state.items.map(function(item) {
             return (React.createElement(ComponentToolbarItem, {item: item}));
         }.bind(this))
@@ -24076,7 +24076,7 @@ var React = require("react");
 
 var ComponentToolbarItem = React.createClass({displayName: 'ComponentToolbarItem',
     render: function() {
-        return (React.createElement("div", {className: "fa " + this.props.item.icon}));
+        return (React.createElement("span", {className: "fa " + this.props.item.icon}));
     }
 });
 
@@ -24118,7 +24118,7 @@ var ComponentTree = React.createClass({displayName: 'ComponentTree',
     }
     
     return (
-        React.createElement("div", null, 
+        React.createElement("div", {className: "component-tree"}, 
             React.createElement("div", null, 
 				React.createElement(ActionIcon, {icon: "glyphicon-plus-sign", onClick: this.onComponentAdd}), 
                 React.createElement(ActionIcon, {icon: "glyphicon-remove-circle", onClick: this.onClearComponents})
@@ -24193,7 +24193,7 @@ var FormBuilder = React.createClass({displayName: 'FormBuilder',
   
   render: function() {
       return (
-          React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "form-builder row"}, 
             React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentToolbar, null)), 
             React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentTree, {key: "true", components: this.state.components})), 
             React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentEdit, {key: "edit", component: this.state.selectedComponent}))
