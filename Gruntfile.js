@@ -5,17 +5,25 @@ module.exports = function(grunt) {
         watch: {
             react: {
                 files: 'react_components/*.jsx',
-                tasks: ['browserify']
+                tasks: ['browserify:client']
             }
         },
 
         browserify: {
-            options: {
-                transform: [require('grunt-react').browserify]
-            },
+            vendor: {
+                src: [],
+                dest: 'vendor.js',
+                options: {
+                    require: ['react', 'fluxxor']
+                }
+            },            
             client: {
                 src: ['react_components/**/*.jsx'],
-                dest: 'bundle.js'
+                dest: 'bundle.js',
+                options: {
+                    transform: [require('grunt-react').browserify],
+                    external: ['react', 'fluxxor']
+                }
             }
         }
     });
@@ -23,7 +31,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', [
-        'watch'
-    ]);
+    grunt.registerTask('default', ['browserify', 'watch']);
 };

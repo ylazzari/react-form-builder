@@ -5,9 +5,21 @@ var Fluxxor = require("fluxxor");
 var FluxMixin = Fluxxor.FluxMixin(React);
 var ActionIcon = require("./actionIcon.jsx");
 var ComponentTreeItem = require("./componentTreeItem.jsx");
+var DragDropMixin = require("react-dnd").DragDropMixin;
+var DraggableTypes = require("./draggableTypes.js");
 
 var ComponentTree = React.createClass({
-  mixins: [FluxMixin],
+    mixins: [FluxMixin, DragDropMixin],
+
+    configureDragDrop: function(registerType) {
+        registerType(DraggableTypes.TOOLBAR_ITEM, {
+            dropTarget: {
+                acceptDrop: function(definition) {
+                    this.getFlux().actions.addComponent(definition);
+                }
+            }
+        });
+    },
   
   onComponentAdd: function(event) {
     var newComponent = {
@@ -27,17 +39,19 @@ var ComponentTree = React.createClass({
         componentList = (
             <ul>
                 {this.props.components.map(function(component, index) {
-                    return (<ComponentTreeItem index={index} component={component} />);
+                    return (<ComponentTreeItem key={component.id} index={index} component={component} />);
                 })}
             </ul>
         );
     }
     
+    var dropState = this.getDropState(DraggableTypes.TOOLBAR_ITEM);
+    var dropStateClass = dropState.isDragging && dropState.isHovering ? 'drag-hovering' : '';
+
     return (
-        <div className="component-tree">
-            <div>
-				<ActionIcon icon="glyphicon-plus-sign" onClick={this.onComponentAdd} />
-                <ActionIcon icon="glyphicon-remove-circle" onClick={this.onClearComponents} />
+        <div className={"component-tree " + dropStateClass}>
+            <div {...this.dropTargetFor(DraggableTypes.TOOLBAR_ITEM)}>
+                <ActionIcon icon="fa-trash" onClick={this.onClearComponents} />
             </div>
             {componentList}
         </div>

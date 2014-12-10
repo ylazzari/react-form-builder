@@ -8,3 +8,16 @@
     margin: 5px;
     cursor: pointer;
 }
+
+.form-builder > div {
+    border: solid 1px black;
+}
+
+.component-tree ul li .action-item,
+.component-tree ul li .action-item + .fa {
+    margin-left: 5px;
+}
+
+.drag-hovering {
+    border: dotted 1px red;
+}

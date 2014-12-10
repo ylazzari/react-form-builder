@@ -12,7 +12,18 @@ var constants = {
 
 var ComponentStore = Fluxxor.createStore({
   initialize: function() {
-    this.components =  [];
+    this.components = [];
+    this.definitions = [
+    {
+        icon: "fa-columns",
+        name: "Panel",
+        componentClass: ""
+    }, 
+    {
+        icon: "fa-text-width",
+        name: "Field Edit",
+        componentClass: ""
+    }];
     this.selectedComponent = null;
     this.nextId = 0;
     
@@ -29,9 +40,19 @@ var ComponentStore = Fluxxor.createStore({
     return this.nextId;
   },
   
-  onAddComponent: function(component) {
-    component.id = this.idIncrementAndGet();
-    this.components.push(component);
+  onAddComponent: function(payload) {
+    var newId = this.idIncrementAndGet();
+    var newComponent = {
+        id: newId,
+        definition: payload.definition,
+        label: payload.definition.name + " " + newId
+    }    
+    if (payload.index === undefined) {
+        this.components.push(newComponent);
+    } else {
+        this.components.splice(payload.index, 0, newComponent);
+    }
+    this.selectedComponent = newComponent;
     this.emit("change");
   },
   
@@ -57,14 +78,18 @@ var ComponentStore = Fluxxor.createStore({
   getState: function() {
     return {
       components: this.components,
-      selectedComponent: this.selectedComponent
+      selectedComponent: this.selectedComponent,
+      definitions: this.definitions
     };
   }
 });  
 
 var actions = {
-  addComponent: function(component) {
-    this.dispatch(constants.ADD_COMPONENT, component);
+  addComponent: function(definition, index) {
+    this.dispatch(constants.ADD_COMPONENT, {
+        definition: definition, 
+        index: index
+    });
   },
   
   deleteComponent: function(index) {
