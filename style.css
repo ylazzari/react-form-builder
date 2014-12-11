@@ -2,11 +2,19 @@
   cursor: pointer;
 }
 
-.component-toolbar .fa {
+.component-toolbar {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.component-toolbar li {
     padding: 5px;
-    border: solid 1px black;
-    margin: 5px;
     cursor: pointer;
+}
+
+.component-toolbar li .fa {
+    margin-right: 5px;
 }
 
 .form-builder > div {
@@ -20,4 +28,21 @@
 
 .drag-hovering {
     border: dotted 1px red;
+}
+
+.dragging {
+    opacity: 0;
+}
+
+.add-child {
+    margin-left: 5px;
+    visibility: hidden;    
+}
+
+.component-tree .drag-hovering .add-child {
+    visibility: visible;
+}
+
+.component-edit h4 .fa {
+    margin-right: 5px;
 }

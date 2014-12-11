@@ -31,15 +31,18 @@ var ComponentTree = React.createClass({
   onClearComponents: function() {
     this.getFlux().actions.clearComponents();
   },
-   
+  
   render: function() {
     
     var componentList;
     if (this.props.components.length > 0) {
         componentList = (
             <ul>
-                {this.props.components.map(function(component, index) {
-                    return (<ComponentTreeItem key={component.id} index={index} component={component} />);
+                {this.props.components.map(function(component) {
+                    var children = component.children.map(function(child) {
+                        return (<ComponentTreeItem key={child.id} component={child} />);
+                    });
+                    return (<ComponentTreeItem key={component.id} component={component} supportDnd="true">{children}</ComponentTreeItem>);
                 })}
             </ul>
         );

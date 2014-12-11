@@ -5,14 +5,16 @@
   "main": "bundle.js",
   "dependencies": {
     "fluxxor": "^1.5.1",
-    "react-dnd": "^0.6.1"
+    "react": "^0.12.1",
+    "react-dnd": "^0.6.1",
+    "rx": "^2.3.22",
+    "rx-react": "^0.1.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.2.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-react": "^0.10.0",
-    "react": "^0.12.1"
+    "grunt-react": "^0.10.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
