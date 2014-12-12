@@ -14,7 +14,7 @@ module.exports = function(grunt) {
                 src: [],
                 dest: 'vendor.js',
                 options: {
-                    require: ['react', 'rx-react', 'fluxxor']
+                    require: ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx']
                 }
             },            
             client: {
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                 dest: 'bundle.js',
                 options: {
                     transform: [require('grunt-react').browserify],
-                    external: ['react', 'rx-react', 'fluxxor']
+                    external: ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx']
                 }
             }
         }
