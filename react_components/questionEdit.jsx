@@ -22,6 +22,10 @@ var QuestionEdit = React.createClass({
         this.getFlux().actions.updateSelectedComponent(this.props.component);
     },
     
+    onSubmit: function(event) {
+        event.preventDefault();
+    },
+    
     renderListOfValues: function() {
         if (this.props.component.questionType == "radio" || this.props.component.questionType == "select") {
             return (
@@ -40,7 +44,7 @@ var QuestionEdit = React.createClass({
         return (
             <div>
                 <h4><span className={"fa " + this.props.component.definition.icon}></span>{this.props.component.label}</h4>
-                <form role="form" className="form-horizontal">
+                <form role="form" className="form-horizontal" onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label className="control-label col-sm-2" htmlFor="labelInput">Label</label>
                         <div className="col-sm-10">

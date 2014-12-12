@@ -173,6 +173,7 @@ var actions = {
 };
 
 var componentStore = new ComponentStore();
+/*
 var componentStoreOnChange = EventHandler.create();
 componentStoreOnChange
 .throttle(500)
@@ -180,6 +181,7 @@ componentStoreOnChange
     console.log("componentStoreOnChange");
     console.log(stringify(this.components, null, '\t'));
 }.bind(componentStore));
+*/
 
 /*
 componentStore.on("change", function() {
@@ -187,7 +189,8 @@ componentStore.on("change", function() {
 });
 */
 
-componentStore.on("change", componentStoreOnChange);
+
+//componentStore.on("change", componentStoreOnChange);
 
 var stores = {
   ComponentStore: componentStore

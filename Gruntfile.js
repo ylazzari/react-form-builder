@@ -1,3 +1,5 @@
+var vendorScripts = ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx', 'rest'];
+
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -14,7 +16,7 @@ module.exports = function(grunt) {
                 src: [],
                 dest: 'vendor.js',
                 options: {
-                    require: ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx']
+                    require: vendorScripts
                 }
             },            
             client: {
@@ -22,14 +24,19 @@ module.exports = function(grunt) {
                 dest: 'bundle.js',
                 options: {
                     transform: [require('grunt-react').browserify],
-                    external: ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx']
+                    external: vendorScripts
                 }
             }
-        }
+        },
+        
+        nodeunit: {
+            all: ['test/test_*.js']
+        },
     });
 
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
     grunt.registerTask('default', ['browserify', 'watch']);
 };

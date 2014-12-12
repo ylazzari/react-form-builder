@@ -25,12 +25,16 @@ var SectionEdit = React.createClass({
         this.props.component.label = event.target.value;
         this.getFlux().actions.updateSelectedComponent(this.props.component);
     },
+    
+    onSubmit: function(event) {
+        event.preventDefault();
+    },
 
     render: function() {
         return (
             <div>
                 <h4><span className={"fa " + this.props.component.definition.icon}></span>{this.props.component.label}</h4>
-                <form className="form-horizontal" role="form">
+                <form className="form-horizontal" role="form" onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label className="control-label col-sm-2" htmlFor="labelInput">Label</label>
                         <div className="col-sm-10">
