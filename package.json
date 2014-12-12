@@ -5,6 +5,7 @@
   "main": "bundle.js",
   "dependencies": {
     "fluxxor": "^1.5.1",
+    "json-stringify-safe": "^5.0.0",
     "react": "^0.12.1",
     "react-dnd": "^0.6.1",
     "rx": "^2.3.22",

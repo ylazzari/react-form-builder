@@ -23,8 +23,8 @@ var FormBuilder = React.createClass({
   
   render: function() {
       return (
-        <div className="container-fluid">
-          <div className="form-builder row">          
+        <div className="container form-builder">
+          <div className="row">          
             <div className="col-md-2"><ComponentToolbar items={this.state.definitions} /></div>
             <div className="col-md-4"><ComponentTree key="true" components={this.state.components} /></div>
             <div className="col-md-6"><ComponentEdit key="edit" component={this.state.selectedComponent} /></div>

@@ -390,6 +390,47 @@ process.chdir = function (dir) {
 };
 
 },{}],3:[function(require,module,exports){
+module.exports = stringify;
+
+function getSerialize (fn, decycle) {
+  var seen = [], keys = [];
+  decycle = decycle || function(key, value) {
+    return '[Circular ' + getPath(value, seen, keys) + ']'
+  };
+  return function(key, value) {
+    var ret = value;
+    if (typeof value === 'object' && value) {
+      if (seen.indexOf(value) !== -1)
+        ret = decycle(key, value);
+      else {
+        seen.push(value);
+        keys.push(key);
+      }
+    }
+    if (fn) ret = fn(key, ret);
+    return ret;
+  }
+}
+
+function getPath (value, seen, keys) {
+  var index = seen.indexOf(value);
+  var path = [ keys[index] ];
+  for (index--; index >= 0; index--) {
+    if (seen[index][ path[0] ] === value) {
+      value = seen[index];
+      path.unshift(keys[index]);
+    }
+  }
+  return '~' + path.join('.');
+}
+
+function stringify(obj, fn, spaces, decycle) {
+  return JSON.stringify(obj, getSerialize(fn, decycle), spaces);
+}
+
+stringify.getSerialize = getSerialize;
+
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var DragDropDispatcher = require('../dispatcher/DragDropDispatcher'),
@@ -420,7 +461,7 @@ var DragDropActionCreators = {
 };
 
 module.exports = DragDropActionCreators;
-},{"../constants/DragDropActionTypes":4,"../dispatcher/DragDropDispatcher":9}],4:[function(require,module,exports){
+},{"../constants/DragDropActionTypes":5,"../dispatcher/DragDropDispatcher":10}],5:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('react/lib/keyMirror');
@@ -432,7 +473,7 @@ var DragDropActionTypes = keyMirror({
 });
 
 module.exports = DragDropActionTypes;
-},{"react/lib/keyMirror":62}],5:[function(require,module,exports){
+},{"react/lib/keyMirror":63}],6:[function(require,module,exports){
 'use strict';
 
 var DropEffects = {
@@ -442,7 +483,7 @@ var DropEffects = {
 };
 
 module.exports = DropEffects;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('react/lib/keyMirror');
@@ -454,7 +495,7 @@ var HorizontalDragAnchors = keyMirror({
 });
 
 module.exports = HorizontalDragAnchors;
-},{"react/lib/keyMirror":62}],7:[function(require,module,exports){
+},{"react/lib/keyMirror":63}],8:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('react/lib/keyMirror');
@@ -464,7 +505,7 @@ var NativeDragItemTypes = {
 };
 
 module.exports = NativeDragItemTypes;
-},{"react/lib/keyMirror":62}],8:[function(require,module,exports){
+},{"react/lib/keyMirror":63}],9:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('react/lib/keyMirror');
@@ -476,7 +517,7 @@ var VerticalDragAnchors = keyMirror({
 });
 
 module.exports = VerticalDragAnchors;
-},{"react/lib/keyMirror":62}],9:[function(require,module,exports){
+},{"react/lib/keyMirror":63}],10:[function(require,module,exports){
 'use strict';
 
 var Dispatcher = require('flux').Dispatcher,
@@ -491,7 +532,7 @@ var DragDropDispatcher = assign(new Dispatcher(), {
 });
 
 module.exports = DragDropDispatcher;
-},{"flux":29,"react/lib/Object.assign":60}],10:[function(require,module,exports){
+},{"flux":30,"react/lib/Object.assign":61}],11:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -502,7 +543,7 @@ module.exports = {
   NativeDragItemTypes: require('./constants/NativeDragItemTypes'),
   DropEffects: require('./constants/DropEffects')
 };
-},{"./constants/DropEffects":5,"./constants/HorizontalDragAnchors":6,"./constants/NativeDragItemTypes":7,"./constants/VerticalDragAnchors":8,"./mixins/DragDropMixin":11,"./mixins/ImagePreloaderMixin":12}],11:[function(require,module,exports){
+},{"./constants/DropEffects":6,"./constants/HorizontalDragAnchors":7,"./constants/NativeDragItemTypes":8,"./constants/VerticalDragAnchors":9,"./mixins/DragDropMixin":12,"./mixins/ImagePreloaderMixin":13}],12:[function(require,module,exports){
 'use strict';
 
 var DragDropActionCreators = require('../actions/DragDropActionCreators'),
@@ -900,7 +941,7 @@ var DragDropMixin = {
 
 module.exports = DragDropMixin;
 
-},{"../actions/DragDropActionCreators":3,"../constants/DropEffects":5,"../stores/DragDropStore":14,"../utils/EnterLeaveMonitor":15,"../utils/NativeDragDropSupport":16,"../utils/bindAll":17,"../utils/configureDataTransfer":18,"../utils/isFileDragDropEvent":24,"./MemoizeBindMixin":13,"lodash-node/modern/arrays/union":32,"lodash-node/modern/arrays/without":33,"lodash-node/modern/objects/defaults":54,"lodash-node/modern/objects/isArray":56,"lodash-node/modern/objects/isObject":57,"lodash-node/modern/utilities/noop":59,"react/lib/Object.assign":60,"react/lib/invariant":61}],12:[function(require,module,exports){
+},{"../actions/DragDropActionCreators":4,"../constants/DropEffects":6,"../stores/DragDropStore":15,"../utils/EnterLeaveMonitor":16,"../utils/NativeDragDropSupport":17,"../utils/bindAll":18,"../utils/configureDataTransfer":19,"../utils/isFileDragDropEvent":25,"./MemoizeBindMixin":14,"lodash-node/modern/arrays/union":33,"lodash-node/modern/arrays/without":34,"lodash-node/modern/objects/defaults":55,"lodash-node/modern/objects/isArray":57,"lodash-node/modern/objects/isObject":58,"lodash-node/modern/utilities/noop":60,"react/lib/Object.assign":61,"react/lib/invariant":62}],13:[function(require,module,exports){
 'use strict';
 
 var getDragImageScale = require('../utils/getDragImageScale');
@@ -966,7 +1007,7 @@ var ImagePreloaderMixin = {
 };
 
 module.exports = ImagePreloaderMixin;
-},{"../utils/getDragImageScale":23}],13:[function(require,module,exports){
+},{"../utils/getDragImageScale":24}],14:[function(require,module,exports){
 'use strict';
 
 var invariant = require('react/lib/invariant');
@@ -997,7 +1038,7 @@ var MemoizeBindMixin = {
 };
 
 module.exports = MemoizeBindMixin;
-},{"react/lib/invariant":61}],14:[function(require,module,exports){
+},{"react/lib/invariant":62}],15:[function(require,module,exports){
 'use strict';
 
 var DragDropDispatcher = require('../dispatcher/DragDropDispatcher'),
@@ -1059,7 +1100,7 @@ DragDropDispatcher.register(function (payload) {
 });
 
 module.exports = DragDropStore;
-},{"../constants/DragDropActionTypes":4,"../dispatcher/DragDropDispatcher":9,"../utils/createStore":19}],15:[function(require,module,exports){
+},{"../constants/DragDropActionTypes":5,"../dispatcher/DragDropDispatcher":10,"../utils/createStore":20}],16:[function(require,module,exports){
 'use strict';
 
 var union = require('lodash-node/modern/arrays/union'),
@@ -1073,8 +1114,8 @@ var union = require('lodash-node/modern/arrays/union'),
   EnterLeaveMonitor.prototype.enter=function(enteringNode) {
     this.$EnterLeaveMonitor_entered = union(
       this.$EnterLeaveMonitor_entered.filter(function(node) 
-        {return document.body.contains(node) &&
-        (!node.contains || node.contains(enteringNode));}
+        {return document.contains(node) &&
+        node.contains(enteringNode);}
       ),
       [enteringNode]
     );
@@ -1085,7 +1126,7 @@ var union = require('lodash-node/modern/arrays/union'),
   EnterLeaveMonitor.prototype.leave=function(leavingNode) {
     this.$EnterLeaveMonitor_entered = without(
       this.$EnterLeaveMonitor_entered.filter(function(node) 
-        {return document.body.contains(node);}
+        {return document.contains(node);}
       ),
       leavingNode
     );
@@ -1099,7 +1140,7 @@ var union = require('lodash-node/modern/arrays/union'),
 
 
 module.exports = EnterLeaveMonitor;
-},{"lodash-node/modern/arrays/union":32,"lodash-node/modern/arrays/without":33}],16:[function(require,module,exports){
+},{"lodash-node/modern/arrays/union":33,"lodash-node/modern/arrays/without":34}],17:[function(require,module,exports){
 'use strict';
 
 var DragDropActionCreators = require('../actions/DragDropActionCreators'),
@@ -1140,7 +1181,7 @@ function checkIfCurrentDragTargetRectChanged() {
 function triggerDragEndIfDragSourceWasRemovedFromDOM() {
   if (_currentDragTarget &&
       _imitateCurrentDragEnd &&
-      !document.body.contains(_currentDragTarget)) {
+      !document.contains(_currentDragTarget)) {
 
     _imitateCurrentDragEnd();
   }
@@ -1239,7 +1280,7 @@ var NativeDragDropSupport = {
 };
 
 module.exports = NativeDragDropSupport;
-},{"../actions/DragDropActionCreators":3,"../constants/DropEffects":5,"../constants/NativeDragItemTypes":7,"../utils/EnterLeaveMonitor":15,"./isFileDragDropEvent":24,"./isFirefox":25,"./isWebkit":27,"lodash-node/modern/arrays/union":32,"lodash-node/modern/arrays/without":33,"react/lib/shallowEqual":64}],17:[function(require,module,exports){
+},{"../actions/DragDropActionCreators":4,"../constants/DropEffects":6,"../constants/NativeDragItemTypes":8,"../utils/EnterLeaveMonitor":16,"./isFileDragDropEvent":25,"./isFirefox":26,"./isWebkit":28,"lodash-node/modern/arrays/union":33,"lodash-node/modern/arrays/without":34,"react/lib/shallowEqual":65}],18:[function(require,module,exports){
 'use strict';
 
 function bindAll(obj, context) {
@@ -1257,7 +1298,7 @@ function bindAll(obj, context) {
 }
 
 module.exports = bindAll;
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 var shouldUseDragPreview = require('./shouldUseDragPreview'),
@@ -1283,7 +1324,7 @@ function configureDataTransfer(containerNode, nativeEvent, dragPreview, dragAnch
 }
 
 module.exports = configureDataTransfer;
-},{"./getBrowserEffectAllowed":21,"./getDragImageOffset":22,"./shouldUseDragPreview":28}],19:[function(require,module,exports){
+},{"./getBrowserEffectAllowed":22,"./getDragImageOffset":23,"./shouldUseDragPreview":29}],20:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter,
@@ -1314,7 +1355,7 @@ function createStore(spec) {
 }
 
 module.exports = createStore;
-},{"./bindAll":17,"events":1,"react/lib/Object.assign":60,"react/lib/shallowEqual":64}],20:[function(require,module,exports){
+},{"./bindAll":18,"events":1,"react/lib/Object.assign":61,"react/lib/shallowEqual":65}],21:[function(require,module,exports){
 'use strict';
 
 function endsWith(str, suffix) {
@@ -1322,7 +1363,7 @@ function endsWith(str, suffix) {
 }
 
 module.exports = endsWith;
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 var DropEffects = require('../constants/DropEffects');
@@ -1352,7 +1393,7 @@ function getBrowserEffectAllowed(effectsAllowed) {
 }
 
 module.exports = getBrowserEffectAllowed;
-},{"../constants/DropEffects":5}],22:[function(require,module,exports){
+},{"../constants/DropEffects":6}],23:[function(require,module,exports){
 'use strict';
 
 var HorizontalDragAnchors = require('../constants/HorizontalDragAnchors'),
@@ -1426,7 +1467,7 @@ function getDragImageOffset(containerNode, dragPreview, dragAnchors, e) {
 }
 
 module.exports = getDragImageOffset;
-},{"../constants/HorizontalDragAnchors":6,"../constants/VerticalDragAnchors":8,"./isFirefox":25,"./isSafari":26}],23:[function(require,module,exports){
+},{"../constants/HorizontalDragAnchors":7,"../constants/VerticalDragAnchors":9,"./isFirefox":26,"./isSafari":27}],24:[function(require,module,exports){
 'use strict';
 
 var isFirefox = require('./isFirefox'),
@@ -1441,7 +1482,7 @@ function getDragImageScale() {
 }
 
 module.exports = getDragImageScale;
-},{"./isFirefox":25,"./isSafari":26}],24:[function(require,module,exports){
+},{"./isFirefox":26,"./isSafari":27}],25:[function(require,module,exports){
 'use strict';
 
 function isFileDragDropEvent(e) {
@@ -1450,7 +1491,7 @@ function isFileDragDropEvent(e) {
 }
 
 module.exports = isFileDragDropEvent;
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 function isFirefox() {
@@ -1458,7 +1499,7 @@ function isFirefox() {
 }
 
 module.exports = isFirefox;
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 function isSafari() {
@@ -1466,7 +1507,7 @@ function isSafari() {
 }
 
 module.exports = isSafari;
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 function isWebkit() {
@@ -1474,7 +1515,7 @@ function isWebkit() {
 }
 
 module.exports = isWebkit;
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 var isSafari = require('./isSafari'),
@@ -1494,7 +1535,7 @@ function shouldUseDragPreview(dragPreview) {
 }
 
 module.exports = shouldUseDragPreview;
-},{"./endsWith":20,"./isSafari":26}],29:[function(require,module,exports){
+},{"./endsWith":21,"./isSafari":27}],30:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1506,7 +1547,7 @@ module.exports = shouldUseDragPreview;
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":30}],30:[function(require,module,exports){
+},{"./lib/Dispatcher":31}],31:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1758,7 +1799,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":31}],31:[function(require,module,exports){
+},{"./invariant":32}],32:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1813,7 +1854,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -1845,7 +1886,7 @@ function union() {
 
 module.exports = union;
 
-},{"../internals/baseFlatten":36,"../internals/baseUniq":38}],33:[function(require,module,exports){
+},{"../internals/baseFlatten":37,"../internals/baseUniq":39}],34:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -1878,7 +1919,7 @@ function without(array) {
 
 module.exports = without;
 
-},{"../internals/baseDifference":35,"../internals/slice":53}],34:[function(require,module,exports){
+},{"../internals/baseDifference":36,"../internals/slice":54}],35:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -1893,7 +1934,7 @@ var arrayPool = [];
 
 module.exports = arrayPool;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -1947,7 +1988,7 @@ function baseDifference(array, values) {
 
 module.exports = baseDifference;
 
-},{"./baseIndexOf":37,"./cacheIndexOf":39,"./createCache":41,"./largeArraySize":46,"./releaseObject":51}],36:[function(require,module,exports){
+},{"./baseIndexOf":38,"./cacheIndexOf":40,"./createCache":42,"./largeArraySize":47,"./releaseObject":52}],37:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2001,7 +2042,7 @@ function baseFlatten(array, isShallow, isStrict, fromIndex) {
 
 module.exports = baseFlatten;
 
-},{"../objects/isArguments":55,"../objects/isArray":56}],37:[function(require,module,exports){
+},{"../objects/isArguments":56,"../objects/isArray":57}],38:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2035,7 +2076,7 @@ function baseIndexOf(array, value, fromIndex) {
 
 module.exports = baseIndexOf;
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2101,7 +2142,7 @@ function baseUniq(array, isSorted, callback) {
 
 module.exports = baseUniq;
 
-},{"./baseIndexOf":37,"./cacheIndexOf":39,"./createCache":41,"./getArray":42,"./largeArraySize":46,"./releaseArray":50,"./releaseObject":51}],39:[function(require,module,exports){
+},{"./baseIndexOf":38,"./cacheIndexOf":40,"./createCache":42,"./getArray":43,"./largeArraySize":47,"./releaseArray":51,"./releaseObject":52}],40:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2142,7 +2183,7 @@ function cacheIndexOf(cache, value) {
 
 module.exports = cacheIndexOf;
 
-},{"./baseIndexOf":37,"./keyPrefix":45}],40:[function(require,module,exports){
+},{"./baseIndexOf":38,"./keyPrefix":46}],41:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2182,7 +2223,7 @@ function cachePush(value) {
 
 module.exports = cachePush;
 
-},{"./keyPrefix":45}],41:[function(require,module,exports){
+},{"./keyPrefix":46}],42:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2229,7 +2270,7 @@ function createCache(array) {
 
 module.exports = createCache;
 
-},{"./cachePush":40,"./getObject":43,"./releaseObject":51}],42:[function(require,module,exports){
+},{"./cachePush":41,"./getObject":44,"./releaseObject":52}],43:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2252,7 +2293,7 @@ function getArray() {
 
 module.exports = getArray;
 
-},{"./arrayPool":34}],43:[function(require,module,exports){
+},{"./arrayPool":35}],44:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2289,7 +2330,7 @@ function getObject() {
 
 module.exports = getObject;
 
-},{"./objectPool":48}],44:[function(require,module,exports){
+},{"./objectPool":49}],45:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2325,7 +2366,7 @@ function isNative(value) {
 
 module.exports = isNative;
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2340,7 +2381,7 @@ var keyPrefix = +new Date + '';
 
 module.exports = keyPrefix;
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2355,7 +2396,7 @@ var largeArraySize = 75;
 
 module.exports = largeArraySize;
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2370,7 +2411,7 @@ var maxPoolSize = 40;
 
 module.exports = maxPoolSize;
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2385,7 +2426,7 @@ var objectPool = [];
 
 module.exports = objectPool;
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2407,7 +2448,7 @@ var objectTypes = {
 
 module.exports = objectTypes;
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2434,7 +2475,7 @@ function releaseArray(array) {
 
 module.exports = releaseArray;
 
-},{"./arrayPool":34,"./maxPoolSize":47}],51:[function(require,module,exports){
+},{"./arrayPool":35,"./maxPoolSize":48}],52:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2465,7 +2506,7 @@ function releaseObject(object) {
 
 module.exports = releaseObject;
 
-},{"./maxPoolSize":47,"./objectPool":48}],52:[function(require,module,exports){
+},{"./maxPoolSize":48,"./objectPool":49}],53:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2505,7 +2546,7 @@ var shimKeys = function(object) {
 
 module.exports = shimKeys;
 
-},{"./objectTypes":49}],53:[function(require,module,exports){
+},{"./objectTypes":50}],54:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2545,7 +2586,7 @@ function slice(array, start, end) {
 
 module.exports = slice;
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2601,7 +2642,7 @@ var defaults = function(object, source, guard) {
 
 module.exports = defaults;
 
-},{"../internals/objectTypes":49,"./keys":58}],55:[function(require,module,exports){
+},{"../internals/objectTypes":50,"./keys":59}],56:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2643,7 +2684,7 @@ function isArguments(value) {
 
 module.exports = isArguments;
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2690,7 +2731,7 @@ var isArray = nativeIsArray || function(value) {
 
 module.exports = isArray;
 
-},{"../internals/isNative":44}],57:[function(require,module,exports){
+},{"../internals/isNative":45}],58:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2731,7 +2772,7 @@ function isObject(value) {
 
 module.exports = isObject;
 
-},{"../internals/objectTypes":49}],58:[function(require,module,exports){
+},{"../internals/objectTypes":50}],59:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2769,7 +2810,7 @@ var keys = !nativeKeys ? shimKeys : function(object) {
 
 module.exports = keys;
 
-},{"../internals/isNative":44,"../internals/shimKeys":52,"./isObject":57}],59:[function(require,module,exports){
+},{"../internals/isNative":45,"../internals/shimKeys":53,"./isObject":58}],60:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -2797,7 +2838,7 @@ function noop() {
 
 module.exports = noop;
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 /**
  * Copyright 2014, Facebook, Inc.
  * All rights reserved.
@@ -2844,7 +2885,7 @@ function assign(target, sources) {
 
 module.exports = assign;
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -2901,7 +2942,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":2}],62:[function(require,module,exports){
+},{"_process":2}],63:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -2956,7 +2997,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require('_process'))
-},{"./invariant":61,"_process":2}],63:[function(require,module,exports){
+},{"./invariant":62,"_process":2}],64:[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -2992,7 +3033,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -3036,7 +3077,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014, Facebook, Inc.
@@ -3204,7 +3245,7 @@ function update(value, spec) {
 module.exports = update;
 
 }).call(this,require('_process'))
-},{"./Object.assign":60,"./invariant":61,"./keyOf":63,"_process":2}],66:[function(require,module,exports){
+},{"./Object.assign":61,"./invariant":62,"./keyOf":64,"_process":2}],67:[function(require,module,exports){
 (function (process,global){
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
@@ -12771,7 +12812,7 @@ module.exports = update;
 }.call(this));
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":2}],67:[function(require,module,exports){
+},{"_process":2}],68:[function(require,module,exports){
 (function (process,global){
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
@@ -17363,7 +17404,7 @@ module.exports = update;
 }.call(this));
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":2}],68:[function(require,module,exports){
+},{"_process":2}],69:[function(require,module,exports){
 (function (global){
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
@@ -17439,7 +17480,7 @@ module.exports = update;
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./rx":67}],69:[function(require,module,exports){
+},{"./rx":68}],70:[function(require,module,exports){
 (function (global){
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 
@@ -17973,7 +18014,7 @@ var ReactiveTest = Rx.ReactiveTest = {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./rx.all":66}],70:[function(require,module,exports){
+},{"./rx.all":67}],71:[function(require,module,exports){
 var Rx = require('./dist/rx.all');
 require('./dist/rx.sorting');
 require('./dist/rx.testing');
@@ -18149,7 +18190,7 @@ Rx.Node = {
 
 module.exports = Rx;
 
-},{"./dist/rx.all":66,"./dist/rx.sorting":68,"./dist/rx.testing":69,"events":1}],71:[function(require,module,exports){
+},{"./dist/rx.all":67,"./dist/rx.sorting":69,"./dist/rx.testing":70,"events":1}],72:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18161,13 +18202,16 @@ var ActionIcon = React.createClass({displayName: 'ActionIcon',
 });
 
 module.exports = ActionIcon;
-},{"react":"react"}],72:[function(require,module,exports){
+},{"react":"react"}],73:[function(require,module,exports){
 var React = require("react");
 var Fluxxor = require("fluxxor");
 var DragDropMixin = require('react-dnd').DragDropMixin;
 var FormBuilder = require("./formBuilder.jsx");
 var update = require('react/lib/update');
 var componentDefinitions = require('./componentDefinitions.jsx');
+var EventHandler = require('rx-react').EventHandler;
+var Rx = require('rx');
+var stringify = require('json-stringify-safe');
 
 var constants = {
   ADD_COMPONENT: "ADD_COMPONENT",
@@ -18333,14 +18377,39 @@ var actions = {
   }
 };
 
+var componentStore = new ComponentStore();
+var componentStoreOnChange = EventHandler.create();
+componentStoreOnChange
+.throttle(500)
+.subscribe(function() {
+    console.log("componentStoreOnChange");
+    console.log(stringify(this.components, null, '\t'));
+}.bind(componentStore));
+
+/*
+componentStore.on("change", function() {
+    console.log("ComponentStore change");
+});
+*/
+
+componentStore.on("change", componentStoreOnChange);
+
 var stores = {
-  ComponentStore: new ComponentStore()
+  ComponentStore: componentStore
 };
 
 var flux = new Fluxxor.Flux(stores, actions);
 
+/*
+flux.on("dispatch", function(type, payload) {
+  if (console && console.log) {
+    console.log("[Dispatch]", type, payload);
+  }
+});
+*/
+
 React.render(React.createElement(FormBuilder, {flux: flux}), document.getElementById('app'));
-},{"./componentDefinitions.jsx":73,"./formBuilder.jsx":80,"fluxxor":"fluxxor","react":"react","react-dnd":10,"react/lib/update":65}],73:[function(require,module,exports){
+},{"./componentDefinitions.jsx":74,"./formBuilder.jsx":81,"fluxxor":"fluxxor","json-stringify-safe":3,"react":"react","react-dnd":11,"react/lib/update":66,"rx":71,"rx-react":"rx-react"}],74:[function(require,module,exports){
 var React = require('react');
 var SectionEdit = require('./sectionEdit.jsx');
 var QuestionEdit = require('./questionEdit.jsx');
@@ -18387,7 +18456,7 @@ module.exports = [
         ]
     }
 ];
-},{"./questionEdit.jsx":81,"./sectionEdit.jsx":82,"react":"react"}],74:[function(require,module,exports){
+},{"./questionEdit.jsx":82,"./sectionEdit.jsx":83,"react":"react"}],75:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18413,7 +18482,7 @@ var ComponentEdit = React.createClass({displayName: 'ComponentEdit',
 });
 
 module.exports = ComponentEdit;
-},{"react":"react"}],75:[function(require,module,exports){
+},{"react":"react"}],76:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18442,7 +18511,7 @@ var ComponentToolbar = React.createClass({displayName: 'ComponentToolbar',
 });
 
 module.exports = ComponentToolbar;
-},{"./componentToolbarItem.jsx":76,"react":"react"}],76:[function(require,module,exports){
+},{"./componentToolbarItem.jsx":77,"react":"react"}],77:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18474,7 +18543,7 @@ var ComponentToolbarItem = React.createClass({displayName: 'ComponentToolbarItem
 });
 
 module.exports = ComponentToolbarItem;
-},{"./draggableTypes.js":79,"react":"react","react-dnd":10}],77:[function(require,module,exports){
+},{"./draggableTypes.js":80,"react":"react","react-dnd":11}],78:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18497,13 +18566,6 @@ var ComponentTree = React.createClass({displayName: 'ComponentTree',
             }
         });
     },
-  
-  onComponentAdd: function(event) {
-    var newComponent = {
-      label: "New Component"
-    };
-    this.getFlux().actions.addComponent(newComponent);
-  },
   
   onClearComponents: function() {
     this.getFlux().actions.clearComponents();
@@ -18540,7 +18602,7 @@ var ComponentTree = React.createClass({displayName: 'ComponentTree',
 });
 
 module.exports = ComponentTree;
-},{"./actionIcon.jsx":71,"./componentTreeItem.jsx":78,"./draggableTypes.js":79,"fluxxor":"fluxxor","react":"react","react-dnd":10}],78:[function(require,module,exports){
+},{"./actionIcon.jsx":72,"./componentTreeItem.jsx":79,"./draggableTypes.js":80,"fluxxor":"fluxxor","react":"react","react-dnd":11}],79:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18656,12 +18718,12 @@ var ComponentTreeItem = React.createClass({displayName: 'ComponentTreeItem',
 });
 
 module.exports = ComponentTreeItem;
-},{"./actionIcon.jsx":71,"./draggableTypes.js":79,"./utils.js":83,"fluxxor":"fluxxor","react":"react","react-dnd":10}],79:[function(require,module,exports){
+},{"./actionIcon.jsx":72,"./draggableTypes.js":80,"./utils.js":84,"fluxxor":"fluxxor","react":"react","react-dnd":11}],80:[function(require,module,exports){
 module.exports = {
     TOOLBAR_ITEM: "toolbarItem",
     TREE_ITEM: "treeItem"
 };
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18687,8 +18749,8 @@ var FormBuilder = React.createClass({displayName: 'FormBuilder',
   
   render: function() {
       return (
-        React.createElement("div", {className: "container-fluid"}, 
-          React.createElement("div", {className: "form-builder row"}, 
+        React.createElement("div", {className: "container form-builder"}, 
+          React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "col-md-2"}, React.createElement(ComponentToolbar, {items: this.state.definitions})), 
             React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentTree, {key: "true", components: this.state.components})), 
             React.createElement("div", {className: "col-md-6"}, React.createElement(ComponentEdit, {key: "edit", component: this.state.selectedComponent}))
@@ -18699,7 +18761,7 @@ var FormBuilder = React.createClass({displayName: 'FormBuilder',
 });
 
 module.exports = FormBuilder;
-},{"./componentEdit.jsx":74,"./componentToolbar.jsx":75,"./componentTree.jsx":77,"fluxxor":"fluxxor","react":"react"}],81:[function(require,module,exports){
+},{"./componentEdit.jsx":75,"./componentToolbar.jsx":76,"./componentTree.jsx":78,"fluxxor":"fluxxor","react":"react"}],82:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18767,7 +18829,7 @@ var QuestionEdit = React.createClass({displayName: 'QuestionEdit',
 });
 
 module.exports = QuestionEdit;
-},{"fluxxor":"fluxxor","react":"react"}],82:[function(require,module,exports){
+},{"fluxxor":"fluxxor","react":"react"}],83:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require("react");
@@ -18814,7 +18876,7 @@ var SectionEdit = React.createClass({displayName: 'SectionEdit',
 });
 
 module.exports = SectionEdit;
-},{"fluxxor":"fluxxor","react":"react","rx":70,"rx-react":"rx-react"}],83:[function(require,module,exports){
+},{"fluxxor":"fluxxor","react":"react","rx":71,"rx-react":"rx-react"}],84:[function(require,module,exports){
 module.exports = {
     ellipsis: function(str, length) {
         if (str && str.length > length) {
@@ -18823,4 +18885,4 @@ module.exports = {
         return str;
     }
 }
-},{}]},{},[71,72,73,74,75,76,77,78,80,81,82]);
+},{}]},{},[72,73,74,75,76,77,78,79,81,82,83]);

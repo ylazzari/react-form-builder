@@ -21,13 +21,6 @@ var ComponentTree = React.createClass({
         });
     },
   
-  onComponentAdd: function(event) {
-    var newComponent = {
-      label: "New Component"
-    };
-    this.getFlux().actions.addComponent(newComponent);
-  },
-  
   onClearComponents: function() {
     this.getFlux().actions.clearComponents();
   },

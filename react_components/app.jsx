@@ -4,6 +4,9 @@ var DragDropMixin = require('react-dnd').DragDropMixin;
 var FormBuilder = require("./formBuilder.jsx");
 var update = require('react/lib/update');
 var componentDefinitions = require('./componentDefinitions.jsx');
+var EventHandler = require('rx-react').EventHandler;
+var Rx = require('rx');
+var stringify = require('json-stringify-safe');
 
 var constants = {
   ADD_COMPONENT: "ADD_COMPONENT",
@@ -169,10 +172,35 @@ var actions = {
   }
 };
 
+var componentStore = new ComponentStore();
+var componentStoreOnChange = EventHandler.create();
+componentStoreOnChange
+.throttle(500)
+.subscribe(function() {
+    console.log("componentStoreOnChange");
+    console.log(stringify(this.components, null, '\t'));
+}.bind(componentStore));
+
+/*
+componentStore.on("change", function() {
+    console.log("ComponentStore change");
+});
+*/
+
+componentStore.on("change", componentStoreOnChange);
+
 var stores = {
-  ComponentStore: new ComponentStore()
+  ComponentStore: componentStore
 };
 
 var flux = new Fluxxor.Flux(stores, actions);
+
+/*
+flux.on("dispatch", function(type, payload) {
+  if (console && console.log) {
+    console.log("[Dispatch]", type, payload);
+  }
+});
+*/
 
 React.render(<FormBuilder flux={flux} />, document.getElementById('app'));
