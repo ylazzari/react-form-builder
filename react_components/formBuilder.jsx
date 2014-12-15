@@ -13,7 +13,8 @@ var React = require("react"),
     Rx = require('rx'),
     stringify = require('json-stringify-safe'),
     removeParent = require('./utils.js').removeParent,
-    clone = require('clone');
+    clone = require('clone'),
+    constants = require('./storeEvents.js');
 
 var FormBuilder = React.createClass({
   mixins: [FluxMixin, StoreWatchMixin("ComponentStore")],
@@ -35,25 +36,11 @@ var FormBuilder = React.createClass({
     
     this.componentStoreOnChange = EventHandler.create();
     
-    this.componentStoreOnChange.throttle(1000).subscribe(function() {
+    this.componentStoreOnChange.throttle(1000).subscribe(function(eventParams) {
+    
+        console.log(eventParams.type);
     
         var components = this.getFlux().store("ComponentStore").getState().components
-        /*
-        var componentsClone = components.map(function(c) {
-            return clone(c);
-        }).map(function(c) {
-            removeParent(c);
-            return c;
-        });
-        
-        this.restClient({
-            path: 'http://127.0.0.1:3000/data',
-            method: 'POST',
-            entity: componentsClone
-        }).then(function(response) {
-            this.refs.previewPanel.getDOMNode().innerHTML = response.entity;
-        }.bind(this));
-        */
         
         Rx.Observable.fromArray(components).map(function(c) {
             return clone(c);

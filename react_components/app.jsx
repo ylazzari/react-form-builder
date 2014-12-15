@@ -1,22 +1,9 @@
-var React = require("react");
-var Fluxxor = require("fluxxor");
-var DragDropMixin = require('react-dnd').DragDropMixin;
-var FormBuilder = require("./formBuilder.jsx");
-var update = require('react/lib/update');
-var componentDefinitions = require('./componentDefinitions.jsx');
-var EventHandler = require('rx-react').EventHandler;
-var Rx = require('rx');
-var stringify = require('json-stringify-safe');
-
-var constants = {
-  ADD_COMPONENT: "ADD_COMPONENT",
-  ADD_CHILD_COMPONENT: "ADD_CHILD_COMPONENT",
-  DELETE_COMPONENT: "DELETE_COMPONENT",
-  CLEAR_COMPONENTS: "CLEAR_COMPONENTS",
-  SELECT_COMPONENT: "SELECT_COMPONENT",
-  UPDATE_SELECTED_COMPONENT: "UPDATE_SELECTED_COMPONENT",
-  MOVE_COMPONENT: "MOVE_COMPONENT"
-};
+var React = require("react"),
+    Fluxxor = require("fluxxor"),
+    FormBuilder = require("./formBuilder.jsx"),
+    update = require('react/lib/update'),
+    componentDefinitions = require('./componentDefinitions.js'),
+    constants = require('./storeEvents.js');
 
 var ComponentStore = Fluxxor.createStore({
   initialize: function() {
@@ -39,7 +26,7 @@ var ComponentStore = Fluxxor.createStore({
   createComponent: function(definition) {
     var newId = this.idIncrementAndGet();
     var newComponent = {
-        id: newId,
+        id: definition.name + "_" + newId,
         definition: definition,
         label: definition.name + " " + newId,
         children: [],
@@ -62,11 +49,15 @@ var ComponentStore = Fluxxor.createStore({
         this.components.splice(this.components.indexOf(payload.beforeComponent), 0, newComponent);
     }
     this.selectedComponent = newComponent;
-    this.emit("change");
+    this.emit("change", {
+        type: constants.ADD_COMPONENT,
+        payload: newComponent
+    });
   },
   
   onAddChildComponent: function(payload) {
     var newComponent = this.createComponent(payload.definition);
+    
     /*
     var updatedParent = update(payload.parentComponent, {
         children: {
@@ -82,7 +73,10 @@ var ComponentStore = Fluxxor.createStore({
     payload.parentComponent.children.push(newComponent);
     this.selectedComponent = newComponent;
     
-    this.emit("change");
+    this.emit("change", {
+        type: constants.ADD_CHILD_COMPONENT,
+        payload: newComponent
+    });
   },
   
   onDeleteComponent: function(component) {
@@ -95,18 +89,26 @@ var ComponentStore = Fluxxor.createStore({
     } else {
         this.components.splice(this.components.indexOf(component), 1);
     }    
-    this.emit("change");
+    this.emit("change", {
+        type: constants.DELETE_COMPONENT,
+        payload: component
+    });
   },
   
   onClearComponents: function() {
     this.components = [];
     this.selectedComponent = null;
-    this.emit("change");
+    this.emit("change", {
+        type: constants.CLEAR_COMPONENTS
+    });
   },
   
   onSelectComponent: function(component) {
     this.selectedComponent = component;
-    this.emit("change");
+    this.emit("change", {
+        type: constants.SELECT_COMPONENT, 
+        payload: component
+    });
   },
   
   onMoveComponent: function(payload) {
@@ -119,12 +121,18 @@ var ComponentStore = Fluxxor.createStore({
         ]
     };
     this.components = update(this.components, stateUpdate);
-    this.emit("change");
+    this.emit("change", {
+        type: constants.MOVE_COMPONENT,
+        payload: payload
+    });
   },
   
   onUpdateSelectedComponent: function(component) {
     this.selectedComponent = component;
-    this.emit("change");
+    this.emit("change", {
+        type: constants.UPDATE_SELECTED_COMPONENT,
+        payload: component
+    });
   },
   
   getState: function() {
@@ -172,38 +180,10 @@ var actions = {
   }
 };
 
-var componentStore = new ComponentStore();
-/*
-var componentStoreOnChange = EventHandler.create();
-componentStoreOnChange
-.throttle(500)
-.subscribe(function() {
-    console.log("componentStoreOnChange");
-    console.log(stringify(this.components, null, '\t'));
-}.bind(componentStore));
-*/
-
-/*
-componentStore.on("change", function() {
-    console.log("ComponentStore change");
-});
-*/
-
-
-//componentStore.on("change", componentStoreOnChange);
-
 var stores = {
-  ComponentStore: componentStore
+  ComponentStore: new ComponentStore()
 };
 
 var flux = new Fluxxor.Flux(stores, actions);
-
-/*
-flux.on("dispatch", function(type, payload) {
-  if (console && console.log) {
-    console.log("[Dispatch]", type, payload);
-  }
-});
-*/
 
 React.render(<FormBuilder flux={flux} />, document.getElementById('app'));

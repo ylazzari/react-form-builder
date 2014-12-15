@@ -9,16 +9,18 @@ module.exports = [
         componentClass: "",
         initializeComponent: function(component) {
         },
-        editClass: SectionEdit
+        editClass: SectionEdit,
+        componentType: "section",
     },
     {
         icon: "fa-question-circle",
         name: "Question",
         componentClass: "",
         initializeComponent: function(component) {
-            component.questionType = "text";
+            component.questionType = "textbox";
         },
         editClass: QuestionEdit,
+        componentType: "question",
         questionTypes: 
         [
             {

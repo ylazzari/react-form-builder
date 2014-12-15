@@ -1,4 +1,4 @@
-var vendorScripts = ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx', 'rest'];
+var vendorScripts = ['react', 'react-dnd', 'rx-react', 'fluxxor', 'json-stringify-safe', 'rx', 'rest', 'clone'];
 
 module.exports = function(grunt) {
     grunt.initConfig({
@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
         watch: {
             react: {
-                files: 'react_components/*.jsx',
+                files: 'react_components/*.js*',
                 tasks: ['browserify:client']
             }
         },
@@ -31,12 +31,21 @@ module.exports = function(grunt) {
         
         nodeunit: {
             all: ['test/test_*.js']
-        },
+        } /*,
+                
+        copy: {
+            main: {
+                src: 'vendor.js',
+                dest: 'H:/workspace/mets/mets-app-form-builder/src/main/webapp/scripts/form-creator/'
+            }
+        }
+        */
     });
 
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('default', ['browserify', 'watch']);
 };
