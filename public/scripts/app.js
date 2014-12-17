@@ -3645,7 +3645,7 @@ var stores = {
 
 var flux = new Fluxxor.Flux(stores, actions);
 
-React.render(React.createElement(FormBuilder, {flux: flux}), document.getElementById('app'));
+React.render(React.createElement(FormBuilder, {flux: flux, serverPostBack: "http://localhost:3000/data"}), document.getElementById('app'));
 },{"./componentDefinitions.js":35,"./formBuilder.jsx":42,"./storeEvents.js":45,"fluxxor":"fluxxor","react":"react","react/lib/update":5}],35:[function(require,module,exports){
 var React = require('react');
 var SectionEdit = require('./sectionEdit.jsx');
@@ -3818,10 +3818,10 @@ var ComponentTree = React.createClass({displayName: 'ComponentTree',
             React.createElement("ul", null, 
                 this.props.components.map(function(component) {
                     var children = component.children.map(function(child) {
-                        return (React.createElement(ComponentTreeItem, {key: child.id, component: child}));
-                    });
-                    return (React.createElement(ComponentTreeItem, {key: component.id, component: component, supportDnd: "true"}, children));
-                })
+                        return (React.createElement(ComponentTreeItem, {key: child.id, component: child, selected: child === this.props.selected}));
+                    }.bind(this));
+                    return (React.createElement(ComponentTreeItem, {key: component.id, component: component, supportDnd: "true", selected: component === this.props.selected}, children));
+                }.bind(this))
             )
         );
     }
@@ -3912,7 +3912,10 @@ var ComponentTreeItem = React.createClass({displayName: 'ComponentTreeItem',
   renderDnd: function() {
     var toolbarItemDropState = this.getDropState(DraggableTypes.TOOLBAR_ITEM);
     var treeItemDropState = this.getDropState(DraggableTypes.TREE_ITEM);
-    var liClasses;
+    var liClasses = '';
+    if (this.props.selected) {
+        liClasses = 'selected';
+    }
     if (toolbarItemDropState.isHovering) {
         liClasses += ' drag-hovering';
     } else {
@@ -3939,8 +3942,12 @@ var ComponentTreeItem = React.createClass({displayName: 'ComponentTreeItem',
   },
   
   renderNonDnd: function() {
+    var liClasses;
+    if (this.props.selected) {
+        liClasses += ' selected';
+    }
     return (
-          React.createElement("li", null, 
+          React.createElement("li", {className: liClasses}, 
             React.createElement("span", {className: "fa " + this.props.component.definition.icon}), 
             React.createElement("span", {onClick: this.onComponentSelect, className: "action-item"}, ellipsis(this.props.component.label, 20)), 
             React.createElement(ActionIcon, {icon: "fa-trash", onClick: this.onComponentDelete})
@@ -4014,11 +4021,11 @@ var FormBuilder = React.createClass({displayName: 'FormBuilder',
             return c;
         }).toArray().subscribe(function(componentsClone) {
             this.restClient({
-                path: 'http://127.0.0.1:3000/data',
+                path: this.props.serverPostBack,
                 method: 'POST',
                 entity: componentsClone
             }).then(function(response) {
-                this.refs.previewPanel.getDOMNode().innerHTML = response.entity;
+                $(this.refs.previewPanel.getDOMNode()).html(response.entity);
             }.bind(this));
         }.bind(this));
         
@@ -4035,14 +4042,14 @@ var FormBuilder = React.createClass({displayName: 'FormBuilder',
   
   render: function() {
       return (
-        React.createElement("div", {className: "container form-builder"}, 
-          React.createElement("div", {className: "row"}, 
-            React.createElement("div", {className: "col-md-2"}, React.createElement(ComponentToolbar, {items: this.state.definitions})), 
-            React.createElement("div", {className: "col-md-4"}, React.createElement(ComponentTree, {key: "true", components: this.state.components})), 
-            React.createElement("div", {className: "col-md-6"}, React.createElement(ComponentEdit, {key: "edit", component: this.state.selectedComponent}))
-          ), 
+        React.createElement("div", {className: "form-builder"}, 
+            React.createElement(ComponentToolbar, {items: this.state.definitions}), 
+            React.createElement("div", {className: "clearfix"}, 
+                React.createElement(ComponentTree, {key: "tree", components: this.state.components, selected: this.state.selectedComponent}), 
+                React.createElement(ComponentEdit, {key: "edit", component: this.state.selectedComponent})
+            ), 
           React.createElement("div", null, 
-            React.createElement("textarea", {ref: "previewPanel", rows: "50", cols: "50"})
+            React.createElement("pre", {ref: "previewPanel"})
           )
         )
           );
@@ -4158,7 +4165,7 @@ var SectionEdit = React.createClass({displayName: 'SectionEdit',
     render: function() {
         return (
             React.createElement("div", null, 
-                React.createElement("h4", null, React.createElement("span", {className: "fa " + this.props.component.definition.icon}), this.props.component.label), 
+            /*<h4><span className={"fa " + this.props.component.definition.icon}></span>{this.props.component.label}</h4>*/
                 React.createElement("form", {className: "form-horizontal", role: "form", onSubmit: this.onSubmit}, 
                     React.createElement("div", {className: "form-group"}, 
                         React.createElement("label", {className: "control-label col-sm-2", htmlFor: "labelInput"}, "Label"), 

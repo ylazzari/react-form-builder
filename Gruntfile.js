@@ -7,21 +7,21 @@ module.exports = function(grunt) {
         watch: {
             react: {
                 files: 'react_components/*.js*',
-                tasks: ['browserify:client']
+                tasks: ['browserify:app']
             }
         },
 
         browserify: {
             vendor: {
                 src: [],
-                dest: 'vendor.js',
+                dest: './public/scripts/vendor.js',
                 options: {
                     require: vendorScripts
                 }
             },            
-            client: {
+            app: {
                 src: ['react_components/**/*.jsx'],
-                dest: 'bundle.js',
+                dest: './public/scripts/app.js',
                 options: {
                     transform: [require('grunt-react').browserify],
                     external: vendorScripts
@@ -31,21 +31,12 @@ module.exports = function(grunt) {
         
         nodeunit: {
             all: ['test/test_*.js']
-        } /*,
-                
-        copy: {
-            main: {
-                src: 'vendor.js',
-                dest: 'H:/workspace/mets/mets-app-form-builder/src/main/webapp/scripts/form-creator/'
-            }
         }
-        */
     });
 
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
-    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('default', ['browserify', 'watch']);
 };

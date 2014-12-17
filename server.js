@@ -1,9 +1,15 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     multer = require('multer'),
-    stringify = require('json-stringify-safe'); 
+    stringify = require('json-stringify-safe'),
+    morgan = require('morgan'),
+    favicon = require('serve-favicon'),
+    path = require('path');
 
 var app = express();
+
+// favicon support
+app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
 
 // CORS support
 app.use(function(req, res, next) {
@@ -21,19 +27,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // for parsing multipart/form-data
 app.use(multer()); 
 
-app.get('/', function (req, res) {
-    res.send('Hello World!');
-    res.json(req.body);
-});
+// request logging
+app.use(morgan('dev'));
+
+// handle static content
+app.use(express.static('public'));
 
 app.post('/data', function (req, res) {
-    console.log('received request for ' + req.get('Content-Type'));
-    console.log(req.body);
     res.send(stringify(req.body, null, '\t'));
 });
 
-var server = app.listen(3000, '127.0.0.1', function () {
+var server = app.listen(3000, 'localhost', function () {
     var host = server.address().address;
     var port = server.address().port;
-    console.log('Example app listening at http://%s:%s', host, port);
+    console.log('Server listening at http://%s:%s', host, port);
 });

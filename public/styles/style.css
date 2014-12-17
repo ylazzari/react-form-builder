@@ -2,29 +2,56 @@
   cursor: pointer;
 }
 
-.component-toolbar {
+.component-toolbar, .component-tree ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
+.component-tree ul ul {
+    margin-left: 20px;
+}
+
 .component-toolbar li {
     padding: 5px;
     cursor: pointer;
+    display: inline;
 }
 
 .component-toolbar li .fa {
     margin-right: 5px;
 }
 
-.form-builder .row > div {
-    border: solid 1px black;
-    min-height: 100px;
-}
-
 .component-tree ul li .action-item,
 .component-tree ul li .action-item + .fa {
     margin-left: 5px;
+}
+
+.component-tree li.selected {
+    border: solid 2px blue;
+}
+
+.component-toolbar {
+    border: solid 1px black;
+}
+
+.component-tree {
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+    border-bottom: solid 1px black;
+    width: 25%;
+}
+
+.component-edit {
+    border-right: solid 1px black;
+    border-bottom: solid 1px black;
+    width: 75%;
+}
+
+.component-tree, .component-edit {
+    float: left;
+    height: 200px;
+    overflow: scroll;
 }
 
 .drag-hovering {

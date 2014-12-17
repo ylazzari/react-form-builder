@@ -33,10 +33,10 @@ var ComponentTree = React.createClass({
             <ul>
                 {this.props.components.map(function(component) {
                     var children = component.children.map(function(child) {
-                        return (<ComponentTreeItem key={child.id} component={child} />);
-                    });
-                    return (<ComponentTreeItem key={component.id} component={component} supportDnd="true">{children}</ComponentTreeItem>);
-                })}
+                        return (<ComponentTreeItem key={child.id} component={child} selected={child === this.props.selected} />);
+                    }.bind(this));
+                    return (<ComponentTreeItem key={component.id} component={component} supportDnd="true" selected={component === this.props.selected}>{children}</ComponentTreeItem>);
+                }.bind(this))}
             </ul>
         );
     }

@@ -5964,8 +5964,8 @@ var union = require('lodash-node/modern/arrays/union'),
   EnterLeaveMonitor.prototype.enter=function(enteringNode) {
     this.$EnterLeaveMonitor_entered = union(
       this.$EnterLeaveMonitor_entered.filter(function(node) 
-        {return document.body.contains(node) &&
-        (!node.contains || node.contains(enteringNode));}
+        {return document.contains(node) &&
+        node.contains(enteringNode);}
       ),
       [enteringNode]
     );
@@ -5976,7 +5976,7 @@ var union = require('lodash-node/modern/arrays/union'),
   EnterLeaveMonitor.prototype.leave=function(leavingNode) {
     this.$EnterLeaveMonitor_entered = without(
       this.$EnterLeaveMonitor_entered.filter(function(node) 
-        {return document.body.contains(node);}
+        {return document.contains(node);}
       ),
       leavingNode
     );
@@ -6031,7 +6031,7 @@ function checkIfCurrentDragTargetRectChanged() {
 function triggerDragEndIfDragSourceWasRemovedFromDOM() {
   if (_currentDragTarget &&
       _imitateCurrentDragEnd &&
-      !document.body.contains(_currentDragTarget)) {
+      !document.contains(_currentDragTarget)) {
 
     _imitateCurrentDragEnd();
   }
@@ -6771,7 +6771,7 @@ module.exports = without;
 
 },{"../internals/baseDifference":99,"../internals/slice":117}],98:[function(require,module,exports){
 module.exports=require(18)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\arrayPool.js":18}],99:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\arrayPool.js":18}],99:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -6881,39 +6881,39 @@ module.exports = baseFlatten;
 
 },{"../objects/isArguments":119,"../objects/isArray":120}],101:[function(require,module,exports){
 module.exports=require(24)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseIndexOf.js":24}],102:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseIndexOf.js":24}],102:[function(require,module,exports){
 module.exports=require(26)
-},{"./baseIndexOf":101,"./cacheIndexOf":103,"./createCache":105,"./getArray":106,"./largeArraySize":110,"./releaseArray":114,"./releaseObject":115,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseUniq.js":26}],103:[function(require,module,exports){
+},{"./baseIndexOf":101,"./cacheIndexOf":103,"./createCache":105,"./getArray":106,"./largeArraySize":110,"./releaseArray":114,"./releaseObject":115,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\baseUniq.js":26}],103:[function(require,module,exports){
 module.exports=require(27)
-},{"./baseIndexOf":101,"./keyPrefix":109,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cacheIndexOf.js":27}],104:[function(require,module,exports){
+},{"./baseIndexOf":101,"./keyPrefix":109,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cacheIndexOf.js":27}],104:[function(require,module,exports){
 module.exports=require(28)
-},{"./keyPrefix":109,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cachePush.js":28}],105:[function(require,module,exports){
+},{"./keyPrefix":109,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\cachePush.js":28}],105:[function(require,module,exports){
 module.exports=require(29)
-},{"./cachePush":104,"./getObject":107,"./releaseObject":115,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\createCache.js":29}],106:[function(require,module,exports){
+},{"./cachePush":104,"./getObject":107,"./releaseObject":115,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\createCache.js":29}],106:[function(require,module,exports){
 module.exports=require(31)
-},{"./arrayPool":98,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getArray.js":31}],107:[function(require,module,exports){
+},{"./arrayPool":98,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getArray.js":31}],107:[function(require,module,exports){
 module.exports=require(32)
-},{"./objectPool":112,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getObject.js":32}],108:[function(require,module,exports){
+},{"./objectPool":112,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\getObject.js":32}],108:[function(require,module,exports){
 module.exports=require(33)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\isNative.js":33}],109:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\isNative.js":33}],109:[function(require,module,exports){
 module.exports=require(34)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\keyPrefix.js":34}],110:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\keyPrefix.js":34}],110:[function(require,module,exports){
 module.exports=require(35)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\largeArraySize.js":35}],111:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\largeArraySize.js":35}],111:[function(require,module,exports){
 module.exports=require(36)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\maxPoolSize.js":36}],112:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\maxPoolSize.js":36}],112:[function(require,module,exports){
 module.exports=require(37)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectPool.js":37}],113:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectPool.js":37}],113:[function(require,module,exports){
 module.exports=require(38)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectTypes.js":38}],114:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\objectTypes.js":38}],114:[function(require,module,exports){
 module.exports=require(39)
-},{"./arrayPool":98,"./maxPoolSize":111,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseArray.js":39}],115:[function(require,module,exports){
+},{"./arrayPool":98,"./maxPoolSize":111,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseArray.js":39}],115:[function(require,module,exports){
 module.exports=require(40)
-},{"./maxPoolSize":111,"./objectPool":112,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseObject.js":40}],116:[function(require,module,exports){
+},{"./maxPoolSize":111,"./objectPool":112,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\releaseObject.js":40}],116:[function(require,module,exports){
 module.exports=require(42)
-},{"./objectTypes":113,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\shimKeys.js":42}],117:[function(require,module,exports){
+},{"./objectTypes":113,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\shimKeys.js":42}],117:[function(require,module,exports){
 module.exports=require(43)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\slice.js":43}],118:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\internals\\slice.js":43}],118:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="node" -o ./modern/`
@@ -6971,15 +6971,15 @@ module.exports = defaults;
 
 },{"../internals/objectTypes":113,"./keys":122}],119:[function(require,module,exports){
 module.exports=require(49)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArguments.js":49}],120:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArguments.js":49}],120:[function(require,module,exports){
 module.exports=require(50)
-},{"../internals/isNative":108,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArray.js":50}],121:[function(require,module,exports){
+},{"../internals/isNative":108,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isArray.js":50}],121:[function(require,module,exports){
 module.exports=require(52)
-},{"../internals/objectTypes":113,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isObject.js":52}],122:[function(require,module,exports){
+},{"../internals/objectTypes":113,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\isObject.js":52}],122:[function(require,module,exports){
 module.exports=require(54)
-},{"../internals/isNative":108,"../internals/shimKeys":116,"./isObject":121,"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\keys.js":54}],123:[function(require,module,exports){
+},{"../internals/isNative":108,"../internals/shimKeys":116,"./isObject":121,"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\objects\\keys.js":54}],123:[function(require,module,exports){
 module.exports=require(58)
-},{"H:\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\utilities\\noop.js":58}],124:[function(require,module,exports){
+},{"C:\\Users\\Yannick\\git\\ylazzari\\react-form-builder\\node_modules\\fluxxor\\node_modules\\lodash-node\\modern\\utilities\\noop.js":58}],124:[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.

@@ -186,4 +186,4 @@ var stores = {
 
 var flux = new Fluxxor.Flux(stores, actions);
 
-React.render(<FormBuilder flux={flux} />, document.getElementById('app'));
+React.render(<FormBuilder flux={flux} serverPostBack='http://localhost:3000/data' />, document.getElementById('app'));

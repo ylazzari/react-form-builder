@@ -68,7 +68,10 @@ var ComponentTreeItem = React.createClass({
   renderDnd: function() {
     var toolbarItemDropState = this.getDropState(DraggableTypes.TOOLBAR_ITEM);
     var treeItemDropState = this.getDropState(DraggableTypes.TREE_ITEM);
-    var liClasses;
+    var liClasses = '';
+    if (this.props.selected) {
+        liClasses = 'selected';
+    }
     if (toolbarItemDropState.isHovering) {
         liClasses += ' drag-hovering';
     } else {
@@ -95,8 +98,12 @@ var ComponentTreeItem = React.createClass({
   },
   
   renderNonDnd: function() {
+    var liClasses;
+    if (this.props.selected) {
+        liClasses += ' selected';
+    }
     return (
-          <li>
+          <li className={liClasses}>
             <span className={"fa " + this.props.component.definition.icon}></span>
             <span onClick={this.onComponentSelect} className="action-item">{ellipsis(this.props.component.label, 20)}</span>
             <ActionIcon icon="fa-trash" onClick={this.onComponentDelete} />

@@ -49,11 +49,11 @@ var FormBuilder = React.createClass({
             return c;
         }).toArray().subscribe(function(componentsClone) {
             this.restClient({
-                path: 'http://127.0.0.1:3000/data',
+                path: this.props.serverPostBack,
                 method: 'POST',
                 entity: componentsClone
             }).then(function(response) {
-                this.refs.previewPanel.getDOMNode().innerHTML = response.entity;
+                $(this.refs.previewPanel.getDOMNode()).html(response.entity);
             }.bind(this));
         }.bind(this));
         
@@ -70,14 +70,14 @@ var FormBuilder = React.createClass({
   
   render: function() {
       return (
-        <div className="container form-builder">
-          <div className="row">          
-            <div className="col-md-2"><ComponentToolbar items={this.state.definitions} /></div>
-            <div className="col-md-4"><ComponentTree key="true" components={this.state.components} /></div>
-            <div className="col-md-6"><ComponentEdit key="edit" component={this.state.selectedComponent} /></div>
-          </div>
+        <div className="form-builder">
+            <ComponentToolbar items={this.state.definitions} />
+            <div className="clearfix">          
+                <ComponentTree key="tree" components={this.state.components} selected={this.state.selectedComponent} />
+                <ComponentEdit key="edit" component={this.state.selectedComponent} />
+            </div>
           <div>
-            <textarea ref="previewPanel" rows="50" cols="50"></textarea>
+            <pre ref="previewPanel"></pre>
           </div>
         </div>
           );
